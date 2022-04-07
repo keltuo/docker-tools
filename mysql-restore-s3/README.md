@@ -48,6 +48,7 @@ S3_ACCESS_KEY=****access-key****
 S3_SECRET_KEY=****secret-key****
 S3_BUCKET_BACKUPS=my-prefix
 S3_PREFIX=my-prefix
+S3_FILENAME_GREP=name
 
 RESTORE_SCHEDULE="0 0 0,10,12,14,18 * *"
 MYSQL_HOST=mariadb

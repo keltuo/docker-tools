@@ -44,8 +44,13 @@ else
 fi
 
 if [ "${S3_FILENAME}" == "**None**" ]; then
-  echo "Finding latest backup"
-  S3_FILENAME=$(aws $AWS_ARGS s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | sort | tail -n 1 | awk '{ print $4 }')
+  if [ "${S3_FILENAME_GREP}" == "**None**" ]; then
+    echo "Finding latest backup"
+    S3_FILENAME=$(aws $AWS_ARGS s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | sort | tail -n 1 | awk '{ print $4 }')
+  else
+    echo "Finding latest backup for grep filename ${S3_FILENAME_GREP}"
+    S3_FILENAME=$(aws $AWS_ARGS s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | grep "${S3_FILENAME_GREP}" | sort | tail -n 1 | awk '{ print $4 }')
+  fi
 fi
 
 MYSQL_HOST_OPTS="${MYSQL_OPTS} -h $MYSQL_HOST -P $MYSQL_PORT -u$MYSQL_USER -p$MYSQL_PASSWORD"
