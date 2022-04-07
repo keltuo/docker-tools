@@ -4,6 +4,7 @@ Restore MySQL to S3 (supports periodic restore)
 
 ## Basic usage
 
+###Docker
 ```sh
 $ docker run \ 
   -e S3_ACCESS_KEY_ID=key \ 
@@ -17,13 +18,7 @@ $ docker run \
   keltuo/mysql-restore-s3
 ```
 
-```sh
-$ docker-compose --env-file ./.env_docker-compose up -d --remove-orphans
-```
-
-
-
-## Environment variables
+### Environment variables
 
 - `MYSQL_HOST` the mysql host *required*
 - `MYSQL_PORT` the mysql port (default: 3306)
@@ -39,7 +34,51 @@ $ docker-compose --env-file ./.env_docker-compose up -d --remove-orphans
 - `S3_S3V4` set to `yes` to enable AWS Signature Version 4, required for [minio](https://minio.io) servers (default: no)
 - `SCHEDULE` backup schedule time, see explainatons below
 
-### Automatic Periodic Backups
+### Docker compose
+```sh
+$ docker-compose --env-file ./.env_docker-compose up -d --remove-orphans
+```
+.env_docker-compose
+```dotenv
+PROJECT_NAME=my-project
+
+# S3, minio, digital ocean
+S3_ENDPOINT=https://fra1.digitaloceanspaces.com
+S3_ACCESS_KEY=****access-key****
+S3_SECRET_KEY=****secret-key****
+S3_BUCKET_BACKUPS=my-prefix
+S3_PREFIX=my-prefix
+
+RESTORE_SCHEDULE="0 0 0,10,12,14,18 * *"
+MYSQL_HOST=mariadb
+MYSQL_USER=root
+MYSQL_PASSWORD=root
+
+```
+docker-compose.override.yml
+```yml
+version: "3.7"
+
+services:
+  database-restore:
+    image: keltuo/mysql-restore-s3
+    container_name: ${PROJECT_NAME}_database_restore
+    restart: always
+    environment:
+      - S3_ACCESS_KEY_ID=${S3_ACCESS_KEY_ID}
+      - S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET_BACKUPS}
+      - S3_PREFIX=${S3_PREFIX}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - SCHEDULE=${RESTORE_SCHEDULE}
+
+```
+
+### Automatic Periodic Restore
+Using for demo or dev projects.
 
 You can additionally set the `SCHEDULE` environment variable like `-e SCHEDULE="@weekly"` to run the backup automatically.
 
