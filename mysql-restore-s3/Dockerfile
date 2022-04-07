@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-ADD install.sh install.sh
 RUN apk update apk add mysql-client python3 py3-pip
 RUN pip install awscli
 RUN rm -rf /var/cache/apk/*
