@@ -53,7 +53,9 @@ if [ "${S3_FILENAME}" == "**None**" ]; then
   fi
 fi
 
-MYSQL_HOST_OPTS="${MYSQL_OPTS} -h $MYSQL_HOST -P $MYSQL_PORT -u$MYSQL_USER -p$MYSQL_PASSWORD"
+DB_PASSWORD=$(echo ${MYSQL_PASSWORD} | tr -d '"')
+
+MYSQL_HOST_OPTS="${MYSQL_OPTS} -h $MYSQL_HOST -P $MYSQL_PORT -u$MYSQL_USER -p$DB_PASSWORD"
 
 echo "Fetching ${S3_FILENAME} from S3"
 
