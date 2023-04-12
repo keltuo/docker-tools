@@ -10,4 +10,4 @@ ENV MYSQL_DATABASE **None**
 
 ADD dump.sh. dump.sh
 
-CMD ["dump.sh"]
+CMD ["sh", "dump.sh"]
