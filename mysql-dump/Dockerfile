@@ -8,6 +8,6 @@ ENV MYSQL_USER **None**
 ENV MYSQL_PASSWORD **None**
 ENV MYSQL_DATABASE **None**
 
-ADD dump.sh. dump.sh
+ADD dump.sh dump.sh
 
 CMD ["sh", "dump.sh"]

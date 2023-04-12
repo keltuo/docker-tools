@@ -26,16 +26,16 @@ MYSQL_DATABASE=mydb
 ```sh
 $ touch .env-dump
 $ mkdir backup
-$ docker run --rm --env-file ./.env-dump -v ./backup:/backup keltuo/mysql-dump 
+$ docker run --rm --env-file ./.env-dump -v $(pwd)/backup:/backup keltuo/mysql-dump 
 ```
 ###Docker without env file
 ```sh
 $ mkdir backup
-$ docker run --rm \ 
+$ docker run --rm \
   -e MYSQL_USER=user \
   -e MYSQL_PASSWORD=password \
   -e MYSQL_HOST=localhost \
-  -e MYSQL_DATABASE=mydb
-  -v ./backup:/backup
+  -e MYSQL_DATABASE=mydb \
+  -v $(pwd)/backup:/backup \
   keltuo/mysql-dump
 ```
