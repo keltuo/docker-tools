@@ -11,6 +11,7 @@ Dumping MySQL for backup
 - `MYSQL_USER` the mysql user *required*
 - `MYSQL_PASSWORD` the mysql password *required*
 - `MYSQL_DATABASE` the mysql database *required*
+- `CUSTOM_FILENAME` the filename (default: $(date +"%s_%Y-%m-%d")_${MYSQL_DATABASE}.sql)
 
 .env-dump
 ```dotenv
